@@ -11,6 +11,11 @@ defmodule TilingGame.Game do
   def new(%{start: start_style}) when not (start_style in @start_styles), do: {:error, :unknown_style}
   
   def new(%{width: width, height: height, players: players, start: start_style}) do
-    {:ok, %Game{board: Board.new(width, height), players: players, start_style: start_style}}
+    board = Board.new(width, height)
+    case board do
+      {:error, _} = board -> board
+      _ -> {:ok, %Game{board: board, players: players, start_style: start_style}}
+    end
+    
   end
 end
