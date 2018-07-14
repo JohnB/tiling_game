@@ -71,13 +71,27 @@ defmodule TilingGame.Pentomino do
   def piece(index) do
     all() |> Enum.fetch(index)
   end
+  
+  def x_offset(index), do: Integer.mod(index, @max_dimension)
+  def y_offset(index), do: Integer.floor_div(index, @max_dimension)
 
   def index_to_xy(index) do
-    [x, y] = [Integer.mod(index, @max_dimension), Integer.floor_div(index, @max_dimension)]
+    [x, y] = [x_offset(index), y_offset(index)]
   end
 
   def xy_to_index([x, y], width \\ @max_dimension) do
     x + width * y
+  end
+  
+  # flipping and rotating may move the piece away from the (1,1) origin
+  # so this should snug it up and to the left.
+  def snug(pentomino) do
+    min_x = pentomino |> Enum.map(fn idx -> x_offset(idx) end) |> Enum.min
+    min_y = pentomino |> Enum.map(fn idx -> y_offset(idx) end) |> Enum.min
+    offset = min_x + min_y * @max_dimension
+    IO.inspect([min_x, min_y, offset])
+    
+    pentomino |> Enum.map(fn idx -> idx - offset end)
   end
 
   def flip_top_to_bottom(pentomino) do
@@ -85,6 +99,7 @@ defmodule TilingGame.Pentomino do
       [x, y] = index_to_xy(index)
       xy_to_index([x, @max_dimension - 1 - y])
     end)
+    |> snug()
   end
 
   def flip_side_to_side(pentomino) do
@@ -92,9 +107,14 @@ defmodule TilingGame.Pentomino do
       [x, y] = index_to_xy(index)
       xy_to_index([@max_dimension - 1 - x, y])
     end)
+    |> snug()
   end
 
   def rotate_left(pentomino) do
+    core_rotate_left(pentomino) |> snug()
+  end
+
+  defp core_rotate_left(pentomino) do
     Enum.map(pentomino, fn index ->
       [x, y] = index_to_xy(index)
       xy_to_index([y, @max_dimension - 1 - x])
@@ -102,7 +122,8 @@ defmodule TilingGame.Pentomino do
   end
 
   def rotate_right(pentomino) do
-    pentomino |> rotate_left |> rotate_left |> rotate_left
+    pentomino |> core_rotate_left |> core_rotate_left |> core_rotate_left
+    |> snug()
   end
 
   # Since a board is stored as flattened rows across something that looks like a flat array,
@@ -145,6 +166,8 @@ index = 17
 {:ok, pentomino} = Pentomino.piece(index)
 Pentomino.draw(pentomino, "R")
 pentomino = Pentomino.flip_top_to_bottom(pentomino)
+Pentomino.draw(pentomino, "Y")
+pentomino = Pentomino.snug(pentomino)
 Pentomino.draw(pentomino, "Y")
 
 """
