@@ -44,7 +44,8 @@ defmodule TilingGame.Board do
   end
   
   def cell(board, x, y) do
-    board.squares[index(board, x, y)]
+    offset = index(board, x, y)
+    board.squares[offset]
   end
   
   # Drawing with text will likely never be needed, but is handy for debugging
@@ -57,6 +58,24 @@ defmodule TilingGame.Board do
       end)
       IO.puts("")
     end)
+  end
+  
+  def starting_position_offsets(board, _style = :blokus) do
+    %{
+      1 => "r",
+      board.width => "y",
+      board.width * board.height => "g",
+      1 + board.width * (board.height - 1) => "b",
+    }
+  end
+  
+  def apply_starting_positions(board, style) do
+    new_squares =
+      starting_position_offsets(board, style)
+      |> Enum.reduce(board.squares, fn {offset, color}, acc ->
+        %{acc | offset => color}
+      end)
+    %{board | squares: new_squares}
   end
 
 @usage """
