@@ -19,11 +19,12 @@ defmodule TilingGame.Board do
   def new(width, height) when not (width in @width_range and height in @height_range),
     do: {:error, :invalid_board}
 
-  def new(width, height) do
+  def new(width, height, style \\ :blokus) do
     # Initialize the entire valid board to blank squares
     squares = Enum.reduce(1..(width * height), %{}, fn n, acc -> Map.put(acc, n, @default_square) end)
 
-    {:ok, %Board{width: width, height: height, squares: squares}}
+    raw_board = %Board{width: width, height: height, squares: squares}
+    {:ok, Board.apply_starting_positions(raw_board, style)}
   end
   
   def index(board, x, y), do: x + (board.width * (y - 1))
@@ -48,16 +49,23 @@ defmodule TilingGame.Board do
     board.squares[offset]
   end
   
-  # Drawing with text will likely never be needed, but is handy for debugging
-  def draw(board) do
+  # Generic (read) iterator over the board
+  def each_cell(board, after_row_fn, each_cell_fn) do
     (1..board.height)
     |> Enum.each(fn y ->
       (1..board.width)
       |> Enum.each(fn x ->
-        IO.write(cell(board, x, y))
+        each_cell_fn.(cell(board, x, y), x, y)
       end)
-      IO.puts("")
+      after_row_fn.(y)
     end)
+  end
+  
+  # Drawing with text will likely never be needed, but is handy for debugging
+  def draw(board) do
+    each_cell(board,
+      fn _row_num -> IO.puts("") end,
+      fn cell_value, _x, _y -> IO.write(cell_value) end)
   end
   
   def starting_position_offsets(board, _style = :blokus) do
