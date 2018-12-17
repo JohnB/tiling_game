@@ -28,19 +28,26 @@ defmodule TilingGame.Board do
   end
   
   def index(board, x, y), do: x + (board.width * (y - 1))
+  
+  # Given a piece, and its top-left position on the board,
+  # return the board offsets that it would cover.
+  def board_offsets(board, pentomino, x, y) do
+    base_index = index(board, x, y)
+
+    Pentomino.smear(pentomino, board.width)
+    |> Enum.map(fn offset -> base_index + offset end)
+  end
 
   # When placing a piece, specify the x,y coordinate of the top-left corner of the piece.
   # If the piece has been flipped and we're placing it at the top or left side of the board,
   # we may need a negative X or Y to snug the piece to the edge.
   def place_piece(board, pentomino, x, y, color) do
-    base_index = index(board, x, y)
-    smeared_pentomino = Pentomino.smear(pentomino, board.width)
     new_squares =
-      smeared_pentomino
+      board_offsets(board, pentomino, x, y)
       |> Enum.reduce(board.squares, fn offset, acc ->
-        %{acc | (base_index + offset) => color}
+        %{acc | offset => color}
       end)
-    IO.inspect(new_squares)
+    # IO.inspect(new_squares)
     %{board | squares: new_squares}
   end
   
@@ -87,6 +94,7 @@ defmodule TilingGame.Board do
   end
 
 @usage """
+iex -S mix
 
 alias TilingGame.Pentomino
 alias TilingGame.Board
