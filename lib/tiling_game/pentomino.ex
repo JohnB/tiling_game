@@ -93,7 +93,6 @@ defmodule TilingGame.Pentomino do
     min_x = pentomino |> Enum.map(fn idx -> x_offset(idx) end) |> Enum.min
     min_y = pentomino |> Enum.map(fn idx -> y_offset(idx) end) |> Enum.min
     offset = min_x + min_y * @max_dimension
-    IO.inspect([min_x, min_y, offset])
     
     pentomino |> Enum.map(fn idx -> idx - offset end)
   end
