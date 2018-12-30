@@ -42,13 +42,18 @@ defmodule TilingGame.Board do
   # If the piece has been flipped and we're placing it at the top or left side of the board,
   # we may need a negative X or Y to snug the piece to the edge.
   def place_piece(board, pentomino, x, y, color) do
-    new_squares =
-      board_offsets(board, pentomino, x, y)
-      |> Enum.reduce(board.squares, fn offset, acc ->
-        %{acc | offset => color}
-      end)
-    # IO.inspect(new_squares)
-    %{board | squares: new_squares}
+    try do
+      new_squares =
+        board_offsets(board, pentomino, x, y)
+        |> Enum.reduce(board.squares, fn offset, acc ->
+          %{acc | offset => color}
+        end)
+      # IO.inspect(new_squares)
+      {:ok, %{board | squares: new_squares}}
+    rescue
+      e in RuntimeError -> {:error, inspect(e)}
+      e in KeyError -> {:error, "KeyError: " <> inspect(e)}
+    end
   end
   
   def cell(board, x, y) do

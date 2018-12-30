@@ -69,7 +69,11 @@ defmodule TilingGame.Pentomino do
   end
 
   def piece(index) do
-    all() |> Enum.fetch(index)
+    try do
+      all() |> Enum.fetch(index)
+    rescue
+      e in MatchError -> {:error, "Pieces are numbered from 0 to 20."}
+    end
   end
   
   def x_offset(index), do: Integer.mod(index, @max_dimension)
