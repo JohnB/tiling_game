@@ -37,12 +37,7 @@ defmodule Cli do
     Board.draw(board)
     IO.puts("")
     Pentomino.draw(pentomino, color)
-
-    [command | args] =
-      IO.gets("> ")
-      |> String.trim
-      |> String.split
-    command = String.downcase(command)
+    [command | args] = get_command_from_user()
     
     # when implementing undo, just add to command stack and replay all commands
     # (and move the receive_command() recursion to here - except for "quit")
@@ -58,6 +53,16 @@ defmodule Cli do
         receive_command(%{state | commands: cmds})
       _ ->
         IO.puts("\nB'bye!")
+    end
+  end
+  
+  defp get_command_from_user do
+    case IO.gets("> ") |> String.trim |> String.split do
+      [] ->
+        IO.puts("--> use 'quit' to end the game")
+        get_command_from_user
+      [command | args] ->
+        [String.downcase(command) | args]
     end
   end
   
