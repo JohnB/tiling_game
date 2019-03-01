@@ -9,6 +9,7 @@ defmodule TilingGame.Game do
       http://erlang.org/doc/man/gen_statem.html
       http://erlang.org/doc/design_principles/statem.html
       https://potatosalad.io/2017/10/13/time-out-elixir-state-machines-versus-servers
+      https://hexdocs.pm/gen_state_machine/GenStateMachine.html
 
     Potential states:
         waiting for players
@@ -17,6 +18,26 @@ defmodule TilingGame.Game do
         ongoing moves
         all players done?
         archive game
+
+    Even cleaner abstraction with GenStateMachine:
+
+    defmodule Switch do
+      use GenStateMachine
+
+      # Callbacks
+
+      def handle_event(:cast, _action = :flip, _state = :off, data) do
+        {:next_state, :on, data + 1}
+      end
+
+      def handle_event(:cast, _action = :flip, _state = :on, data) do
+        {:next_state, :off, data}
+      end
+
+      def handle_event({:call, from}, _action = :get_count, state, data) do
+        {:next_state, state, data, [{:reply, from, data}]}
+      end
+    end
 
   """
 
