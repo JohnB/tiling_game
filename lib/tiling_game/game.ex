@@ -4,6 +4,20 @@ defmodule TilingGame.Game do
 
   @moduledoc """
     supposed to represent the game - duh
+
+    Idea: switch to gen_statem
+      http://erlang.org/doc/man/gen_statem.html
+      http://erlang.org/doc/design_principles/statem.html
+      https://potatosalad.io/2017/10/13/time-out-elixir-state-machines-versus-servers
+
+    Potential states:
+        waiting for players
+        ready to play
+        initial moves
+        ongoing moves
+        all players done?
+        archive game
+
   """
 
   defstruct [:board, :players, :start_style]
