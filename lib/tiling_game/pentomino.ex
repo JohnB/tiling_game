@@ -2,6 +2,11 @@ defmodule TilingGame.Pentomino do
   alias __MODULE__
 
   @moduledoc """
+    Pentomino is what we call the shape of a piece in the game.
+    These pieces are the sum of the set of pentominos, tetrominos, trominos,
+    and the domino and monomino - but we'll call it by its biggest shapes.
+    https://en.wikipedia.org/wiki/Polyomino
+    
     Each pentomino square is represented as a grid position in a 5x5 grid.
     However, the 5x5 grid has been flattened to an array, with positions
     represented by a single integer in the range 0..24
@@ -125,7 +130,12 @@ defmodule TilingGame.Pentomino do
     pentomino |> core_rotate_left |> core_rotate_left |> core_rotate_left
     |> snug()
   end
+  
+  
 
+  # TODO: MOVE smear/2, board_offset/2, and draw/2 SOMEWHERE ELSE.
+  #       THEY DON'T BELONG IN Pentomino NOW Piece IS ABSTRACTED OUT.
+  
   # Since a board is stored as flattened rows across something that looks like a flat array,
   # placing a piece requires "smearing" the piece with row-offsets equal to the width of the board.
   def smear(pentomino, board_width) do
