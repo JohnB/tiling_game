@@ -1,5 +1,5 @@
 defmodule TilingGame.Rack do
-  alias __MODULE__
+  #alias __MODULE__
 
   @moduledoc """
     Your rack is where you store your pieces before playing them.

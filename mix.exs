@@ -3,14 +3,14 @@ defmodule TilingGame.Mixfile do
 
   def project do
     [
+      description: "Tools for manipulating pentomino playing pieces.",
+      
       app: :tiling_game,
       version: "0.1.0",
       elixir: "~> 1.8",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       deps: deps(),
-      
-      description: "Tools for manipulating pentomino playing pieces.",
       
       # Docs
       name: "Tiling Game",
@@ -20,11 +20,12 @@ defmodule TilingGame.Mixfile do
         main: "TilingGame",
         #logo: "path/to/logo.png",
         extras: ["README.md"]
-      ]
+      ],
+      package: package()
     ]
   end
   
-  def package do
+  defp package() do
     [
       maintainers: ["John Baylor"],
       licenses: ["MIT"],
@@ -36,9 +37,10 @@ defmodule TilingGame.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger],
-     mod: {TilingGame.Application, []}]
+    [
+      extra_applications: [:logger],
+      mod: {TilingGame.Application, []}
+    ]
   end
 
   # Dependencies can be Hex packages:
