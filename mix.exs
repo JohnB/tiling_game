@@ -9,10 +9,8 @@ defmodule TilingGame.Mixfile do
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       deps: deps(),
-      licenses: ["MIT"],
       
       description: "Tools for manipulating pentomino playing pieces.",
-      links: %{},
       
       # Docs
       name: "Tiling Game",
@@ -24,6 +22,14 @@ defmodule TilingGame.Mixfile do
         #logo: "path/to/logo.png",
         extras: ["README.md"]
       ]
+    ]
+  end
+  
+  def package do
+    [
+      maintainers: ["John Baylor"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/JohnB/tiling_game"}
     ]
   end
 
