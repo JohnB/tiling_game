@@ -1,5 +1,5 @@
 defmodule TilingGame.Pentomino do
-  alias __MODULE__
+  #alias __MODULE__
 
   @moduledoc """
     Pentomino is what we call the shape of a piece in the game.
@@ -81,7 +81,7 @@ defmodule TilingGame.Pentomino do
   def y_offset(index), do: Integer.floor_div(index, @max_dimension)
 
   def index_to_xy(index) do
-    [x, y] = [x_offset(index), y_offset(index)]
+    [_x, _y] = [x_offset(index), y_offset(index)]
   end
 
   def xy_to_index([x, y], width \\ @max_dimension) do

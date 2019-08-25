@@ -16,7 +16,6 @@ defmodule TilingGame.Mixfile do
       name: "Tiling Game",
       source_url: "https://github.com/JohnB/tiling_game",
       homepage_url: "https://tilinggame.com",
-      pure_links: false,
       docs: [
         main: "TilingGame",
         #logo: "path/to/logo.png",
