@@ -9,6 +9,7 @@ defmodule TilingGame.Mixfile do
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       deps: deps(),
+      licenses: "MIT",
       
       # Docs
       name: "Tiling Game",
