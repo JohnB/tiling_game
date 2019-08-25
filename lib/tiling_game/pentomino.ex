@@ -5,7 +5,7 @@ defmodule TilingGame.Pentomino do
     Pentomino is what we call the shape of a piece in the game.
     These pieces are the sum of the set of pentominos, tetrominos, trominos,
     and the domino and monomino - but we'll call it by its biggest shapes.
-    https://en.wikipedia.org/wiki/Polyomino
+    `https://en.wikipedia.org/wiki/Polyomino`
     
     Each pentomino square is represented as a grid position in a 5x5 grid.
     However, the 5x5 grid has been flattened to an array, with positions

@@ -9,7 +9,10 @@ defmodule TilingGame.Mixfile do
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       deps: deps(),
-      licenses: "MIT",
+      licenses: ["MIT"],
+      
+      description: "Tools for manipulating pentomino playing pieces.",
+      links: %{},
       
       # Docs
       name: "Tiling Game",
