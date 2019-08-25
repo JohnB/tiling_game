@@ -42,7 +42,7 @@ puts "#{comment}    %{"
 result.each do |key, indexes|
   puts "#{comment}      \"#{key}\" => #{indexes.inspect},"
 end
-puts "#{comment}      0 => 0" # finsh the map with nonsense
+puts "#{comment}      0 => 0 # finsh the map with nonsense"
 puts "#{comment}  }"
 puts "#{comment}  end"
 puts "#{comment}end"
